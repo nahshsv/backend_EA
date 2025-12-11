@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 // Middleware to parse JSON data
-app.use(express.json());
+//app.use(express.json());
 //Method
 app.get('/webhook',(req,res)=>{
     console.log("Received request:", req.body);
