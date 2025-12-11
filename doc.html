@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Control</title>
+    <style>
+        #status {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trading Control</h1>
+    <button id="tradeButton">Start Trading</button>
+    <div id="status">Trading is currently: Disabled</div>
+
+    <script>
+        const tradeButton = document.getElementById("tradeButton");
+        const statusDiv = document.getElementById("status");
+
+        let is_trading_enabled = false;
+
+        // Hàm cập nhật trạng thái giao dịch trên frontend
+        function updateStatus() {
+            fetch("http://localhost:3000/status")
+                .then(response => response.json())
+                .then(data => {
+                    is_trading_enabled = data.is_trading_enabled;
+                    statusDiv.textContent = "Trading is currently: " + (is_trading_enabled ? "Enabled" : "Disabled");
+                    tradeButton.textContent = is_trading_enabled ? "Stop Trading" : "Start Trading";
+                });
+        }
+
+        // Lắng nghe sự kiện click vào nút Trade
+        tradeButton.addEventListener("click", () => {
+            if (is_trading_enabled) {
+                // Gửi yêu cầu tắt giao dịch
+                fetch("http://localhost:3000/stop", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(() => {
+                    updateStatus();
+                });
+            } else {
+                // Gửi yêu cầu bật giao dịch
+                fetch("http://localhost:3000/start", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(() => {
+                    updateStatus();
+                });
+            }
+        });
+
+        // Kiểm tra trạng thái khi tải trang
+        updateStatus();
+    </script>
+</body>
+</html>
