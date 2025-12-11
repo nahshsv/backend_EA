@@ -5,7 +5,7 @@ const port = 3000;
 // Middleware to parse JSON data
 app.use(express.json());
 //Method
-app.post('/webhook',(req,res)=>{
+app.get('/webhook',(req,res)=>{
     console.log("Received request:", req.body);
     res.json({
         status: 'success',
