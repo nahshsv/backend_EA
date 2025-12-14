@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Bot Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trading Bot Control</h1>
+    <button id="toggleBtn">Turn On Bot</button>
+
+    <script>
+       const button = document.getElementById("toggleBtn");
+
+let botStatus = "off"; // Default status
+
+button.addEventListener("click", async () => {
+    // Toggle bot status
+    botStatus = botStatus === "off" ? "on" : "off";
+    button.textContent = botStatus === "on" ? "Turn Off Bot" : "Turn On Bot";
+
+    // Log the correct URL being sent
+    console.log(`Sending request to: http://localhost:3000/set-bot-status/${botStatus}`);
+
+    // Send request to backend
+    const response = await fetch(`http://localhost:3000/set-bot-status/${botStatus}`);
+    const data = await response.json();
+    console.log(data); // For debugging
+});
+
+    </script>
+</body>
+</html>
